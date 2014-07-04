@@ -15,6 +15,7 @@ $gClient->setDeveloperKey(DEVELOPER_KEY);
 
 $google_oauthV2 = new Google_Oauth2Service($gClient);
 $authUrl = $gClient->createAuthUrl();
+$redirectNow = FALSE;
 if (isset($_POST['twitter'])) {
 
     $twitteroauth = new TwitterOAuth(CONSUMER_KEY, CONSUMER_TOKEN);
@@ -45,6 +46,9 @@ if (isset($_POST['fbpost'])) {
         <link rel="stylesheet" href="assets/css/bootstrap.css"/>
         <link rel="stylesheet" href="assets/css/font-awesome.css"/>
         <script src="assets/js/login.js"></script>
+        <script>
+<?php echo "var FB_APP_ID = " . FB_APP_ID . ";" ?>
+        </script>
     </head>
     <body>
         <div class="login-ctnr">

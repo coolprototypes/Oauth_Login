@@ -5,6 +5,7 @@ define('DB_PASSWORD', '');
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'login');
 
+define('FB_APP_ID', '1450285645237516');
 define('CONSUMER_KEY', 'TjXhpcf3MBn59NgRCPiKA5S3q');
 define('CONSUMER_TOKEN', 'cpAIt1fww3RtvyB74bcAaWrAncp1uKrAhE3uSVdxSaJ3WhzE2W');
 define('GPLUS_CLIENT_ID', '825161639602-eceidognakbf2ttv1rlsh45m9cqiv1rc.apps.googleusercontent.com');

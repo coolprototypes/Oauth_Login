@@ -30,7 +30,7 @@ function fb_login() {
 
 window.fbAsyncInit = function() {
     FB.init({
-        appId: '1450285645237516',
+        appId: FB_APP_ID,
         cookie: true, // enable cookies to allow the server to access 
         xfbml: true, // parse social plugins on this page
         version: 'v2.0', // use version 2.0
@@ -54,12 +54,12 @@ window.fbAsyncInit = function() {
 
 function getInfo() {
     FB.api('/me', function(response) {
+        userObj = response;
         if (viaBtnClick) {
             FB.logout(function(response) {
+                postData();
             });
-            postData();
         }
-        userObj = response;
     });
 }
 function postData() {
