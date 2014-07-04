@@ -20,7 +20,6 @@ if (isset($_POST['twitter'])) {
     $twitteroauth = new TwitterOAuth(CONSUMER_KEY, CONSUMER_TOKEN);
     $request_token = $twitteroauth
             ->getRequestToken(REDIRECT_URL);
-    print_r($request_token);
     $_SESSION['oauth_token'] = $request_token['oauth_token'];
     $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
 
@@ -32,109 +31,45 @@ if (isset($_POST['twitter'])) {
         die('Something wrong happened.');
     }
 }
+if (isset($_POST['fbpost'])) {
+    $_SESSION['fbpost'] = $_POST['fbpost'];
+    header('Location: ' . REDIRECT_URL);
+}
 ?>
 <!Doctype html>
 <html>
     <head>
-        <title>Hello</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <title>Jaagar-Login</title>
+        <link rel="stylesheet" href="assets/css/bootstrap.css"/>
+        <link rel="stylesheet" href="assets/css/font-awesome.css"/>
+        <script src="assets/js/login.js"></script>
     </head>
     <body>
-        <form action="login.php" method="POST">
-            <input type="submit" value="twitter" name="twitter" />
-        </form>
-        <div>
-            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"
-                             class="fb-login-button" data-max-rows="1" data-size="large"
-                             data-show-faces="false" data-auto-logout-link="false">
-            </fb:login-button>
+        <div class="login-ctnr">
+            <p>Please login</p>
+            <div>
+                <a href="#" onclick="tweet_login();"
+                   class="btn btn-block btn-social btn-lg btn-twitter">
+                    <i class="fa fa-twitter"></i> Sign in with Twitter</a>
+                <form id="tweetForm" action="login.php" method="POST" style="display: none;">
+                    <input type="text" value="twitter" name="twitter" />
+                </form>
+            </div>
+            <div>
+                <a class="btn btn-block btn-social btn-lg btn-google-plus" 
+                   href="<?php echo $authUrl ?>">
+                    <i class="fa fa-google-plus"></i> Sign in with google</a>
+            </div>
+            <div>
+                <a href="#" onclick="fb_login();"
+                   class="btn btn-block btn-social btn-lg btn-facebook">
+                    <i class="fa fa-facebook"></i> Sign in with facebook</a>
+                <form id="fbForm" action="login.php" method="POST" style="display: none;">
+                    <input type="text" value="" name="fbpost" id="fbpost"/>
+                </form>
+            </div>
         </div>
-        <a class="login" href="<?php echo $authUrl ?>">Google Login link</a>
-        <script>
-            var viaBtnClick = false;
-            var userObj = false;
-            function statusChangeCallback(response) {
-                console.log('statusChangeCallback');
-                console.log(response);
-                if (response.status === 'connected') {
-                    getInfo();
-                } else if (response.status === 'not_authorized') {
-                } else {
-                }
-            }
-            function checkLoginState() {
-                if (userObj) {
-                    postData();
-                } else {
-                    viaBtnClick = true;
-                    FB.getLoginStatus(function(response) {
-                        statusChangeCallback(response);
-                    });
-                }
-            }
-
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId: '1450285645237516',
-                    cookie: true, // enable cookies to allow the server to access 
-                    xfbml: true, // parse social plugins on this page
-                    version: 'v2.0' // use version 2.0
-                });
-                FB.getLoginStatus(function(response) {
-                    statusChangeCallback(response);
-                });
-
-            };
-
-            (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id))
-                    return;
-                js = d.createElement(s);
-                js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-
-            function getInfo() {
-                console.log('Welcome!  Fetching your information.... ');
-                FB.api('/me', function(response) {
-                    console.log(JSON.stringify(response));
-                    console.log('Successful login for: ' + response.name);
-                    if (viaBtnClick) {
-                        FB.logout(function(response) {
-                        });
-                        postData();
-                    }
-                    userObj = response;
-                });
-            }
-            function postData() {
-                values = {'request': JSON.stringify(userObj)};
-                postToPath('auth_handle.php', values);
-            }
-            function postToPath(path, params, method) {
-                method = method || "post"; // Set method to post by default if not specified.
-
-                // The rest of this code assumes you are not using a library.
-                // It can be made less wordy if you use one.
-                var form = document.createElement("form");
-                form.setAttribute("method", method);
-                form.setAttribute("action", path);
-
-                for (var key in params) {
-                    if (params.hasOwnProperty(key)) {
-                        var hiddenField = document.createElement("input");
-                        hiddenField.setAttribute("type", "hidden");
-                        hiddenField.setAttribute("name", key);
-                        hiddenField.setAttribute("value", params[key]);
-
-                        form.appendChild(hiddenField);
-                    }
-                }
-
-                document.body.appendChild(form);
-                form.submit();
-            }
-        </script>
     </body>
 </html>

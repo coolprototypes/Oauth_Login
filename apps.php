@@ -35,11 +35,10 @@ if (!isset($_SESSION['username'])) {
             <script src="jquery-1.11.0.min.js"></script>
         </head>
         <body>
-            <div>TODO write content</div>
             <h1>Hello <?php
                 echo $_SESSION['username']
                 ?></h1>
-            <p>Your id is <?php echo $_SESSION['id']; ?></p>
+            <!--<p>Your id is <?php echo $_SESSION['id']; ?></p>-->
             <form action="apps.php" method="POST">
                 <input type="submit" value="logout" name="logout" />
             </form>

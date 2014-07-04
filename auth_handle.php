@@ -34,8 +34,9 @@ if (!empty($_GET['oauth_token']) &&
         'username' => $user_info['name'], 'oauth_token' => 'FALSE',
         'oauth_secret' => 'FALSE');
     $gClient->revokeToken();
-} else if (isset($_POST['request'])) {
-    $user_info = json_decode($_POST['request'], TRUE);
+} else if (isset($_SESSION['fbpost'])) {
+    $user_info = json_decode($_SESSION['fbpost'], TRUE);
+    unset($_SESSION['fbpost']);
     $user = array('oauth_provider' => 'facebook', 'oauth_uid' => $user_info['id'],
         'username' => $user_info['name'], 'oauth_token' => 'FALSE',
         'oauth_secret' => 'FALSE');
